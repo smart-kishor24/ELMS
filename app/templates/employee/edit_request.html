@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container register mt-4">
+    <!-- Header -->
+    <h3 class="register-heading text-center mb-4">Edit Leave Request</h3>
+
+    <div class="register-right p-4 shadow-sm rounded">
+        <form method="POST" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="row g-3">
+                <div class="col-md-6">
+                    {{ form.start_date.label(class="form-label") }}
+                    {{ form.start_date(class="form-control") }}
+                    {% for e in form.start_date.errors %}
+                    <small class="text-danger">{{ e }}</small>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6">
+                    {{ form.end_date.label(class="form-label") }}
+                    {{ form.end_date(class="form-control") }}
+                    {% for e in form.end_date.errors %}
+                    <small class="text-danger">{{ e }}</small>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6">
+                    {{ form.leave_type.label(class="form-label") }}
+                    {{ form.leave_type(class="form-select") }}
+                    {% for e in form.leave_type.errors %}
+                    <small class="text-danger">{{ e }}</small>
+                    {% endfor %}
+                </div>
+                <div class="col-md-12">
+                    {{ form.reason.label(class="form-label") }}
+                    {{ form.reason(class="form-control", rows=4) }}
+                    {% for e in form.reason.errors %}
+                    <small class="text-danger">{{ e }}</small>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="mt-3 d-flex justify-content-between">
+                {{ form.submit(class="btnRegister btn btn-success") }}
+                <a href="{{ url_for('employee.history') }}" class="btnBack btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+.register {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    padding: 3%;
+}
+.register-heading {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #495057;
+}
+.register-right {
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+.btnRegister {
+    border-radius: 1.5rem;
+    padding: 8px 20px;
+    background: #2c5364;
+    color: #fff;
+    font-weight: 600;
+}
+.btnRegister:hover {
+    background: #0F2027;
+    color: #fff;
+}
+.btnBack {
+    border-radius: 1.5rem;
+    padding: 8px 20px;
+    border: 2px solid #2c5364;
+    background: transparent;
+    color: #2c5364;
+    text-decoration: none;
+}
+.btnBack:hover {
+    background: #2c5364;
+    color: #fff;
+    text-decoration: none;
+}
+</style>
+
+{% endblock %}

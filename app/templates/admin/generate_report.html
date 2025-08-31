@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block content %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<div class="container register">
+  <div class="row">
+    <!-- Left Panel -->
+    <div class="col-md-3 register-left text-center">
+      <div style="font-weight:bold; font-size:28px; margin-top:40%;">Welcome To</div>
+      <p style="font-size:18px; margin-top:10px;">Report Generator</p>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="col-md-9 register-right p-4">
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="report" role="tabpanel">
+          <h3 class="register-heading mb-4">Generate Leave Report</h3>
+
+          <!-- Form -->
+          <form method="POST" novalidate class="mb-4">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+              {{ form.month.label(class="form-label") }}
+              {{ form.month(class="form-control") }}
+              {% for e in form.month.errors %}
+                <small class="text-danger">{{ e }}</small>
+              {% endfor %}
+            </div>
+            <button type="submit" class="btnRegister">Generate</button>
+          </form>
+
+          <!-- Report Table -->
+          {% if leaves %}
+          <div class="mt-4">
+            <h5 class="mb-3">Leaves for {{ month }}</h5>
+            <div class="mb-3">
+              <a href="{{ url_for('admin.download_csv', month=month) }}" class="btnRegister btn-success mr-2">Download CSV</a>
+              <a href="{{ url_for('admin.download_pdf', month=month) }}" class="btnRegister btn-danger">Download PDF</a>
+            </div>
+
+            <div class="table-responsive shadow-sm">
+              <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                  <tr>
+                    <th>Employee</th>
+                    <th>Type</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for l in leaves %}
+                  <tr>
+                    <td>{{ l.employee.name }}</td>
+                    <td>{{ l.leave_type }}</td>
+                    <td>{{ l.start_date }}</td>
+                    <td>{{ l.end_date }}</td>
+                    <td>{{ l.status }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.register{
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    margin-top: 5%;
+    padding: 3%;
+}
+.register-left{
+    margin-top: 15%;
+    margin-bottom: 5%;
+    width: 25%;
+    animation: mover 1s infinite alternate;
+    color: #fff;
+}
+@keyframes mover {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-10px); }
+}
+.register-left p{
+    font-weight: lighter;
+    padding: 5%;
+    margin-top: -5%;
+}
+.register-right{
+    background: #f8f9fa;
+    border-top-left-radius: 10% 50%;
+    border-bottom-left-radius: 10% 50%;
+    padding: 30px;
+}
+.register-heading{
+    text-align: center;
+    margin-bottom: 20px;
+    color: #495057;
+}
+.btnRegister{
+    border: none;
+    border-radius: 1.5rem;
+    padding: 8px 25px;
+    background: #2c5364;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+}
+.btnRegister:hover{
+    background: #0F2027;
+    color: #fff;
+}
+table{
+    background: #fff;
+    color: #000;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+.table-responsive{
+    border-radius: 10px;
+    overflow: hidden;
+}
+</style>
+{% endblock %}

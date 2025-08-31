@@ -1,0 +1,20 @@
+<doctype html>
+    <html>
+        <head>
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+        </head>
+            <body>
+            </body>
+            <html>
+
+
+<h2>Generate Leave Reports</h2>
+<form method="POST">
+    <label>Report Type:</label>
+    <select name="type">
+        <option value="CSV">CSV</option>
+        <option value="PDF">PDF</option>
+    </select>
+    <button type="submit">Generate</button>
+</form>

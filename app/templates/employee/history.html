@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+  <div class="register p-3">
+    <div class="row align-items-stretch">
+      <!-- Left Panel -->
+      <aside class="col-md-3 d-flex">
+        <div class="left-card text-center p-4 w-100 h-100 d-flex flex-column justify-content-center">
+          <div class="fw-bold fs-4 mb-1">Welcome To</div>
+          <p class="mb-3 fs-6">Leave History</p>
+          <a href="{{ url_for('employee.apply_leave') }}" class="btn btn-primary">Apply New</a>
+        </div>
+      </aside>
+
+      <!-- Right Panel -->
+      <main class="col-md-9">
+        <div class="right-card p-4 shadow-sm rounded h-100">
+          <h3 class="register-heading text-center mb-4">My Leave History</h3>
+
+          {% if leaves.items %}
+          <div class="list-group">
+            {% for r in leaves.items %}
+            <div class="list-group-item mb-3 shadow-sm rounded">
+              <div class="row align-items-center">
+                <!-- Content -->
+                <div class="col-sm-9">
+                  <div class="fw-bold">{{ r.leave_type }}</div>
+                  <div class="text-dark">{{ r.start_date }} → {{ r.end_date }} ({{ r.duration() }} days)</div>
+                  <div class="text-muted small mt-1">{{ r.reason }}</div>
+                  {% if r.manager_comment %}
+                  <div class="small mt-2"><strong>Manager comment:</strong> {{ r.manager_comment }}</div>
+                  {% endif %}
+                </div>
+
+                <!-- Status + Actions -->
+                <div class="col-sm-3 text-sm-end text-start mt-3 mt-sm-0">
+                  <div class="mb-2">
+                    <span class="badge
+                      {% if r.status == 'Approved' %}badge-success
+                      {% elif r.status == 'Rejected' %}badge-danger
+                      {% elif r.status == 'Cancelled' %}badge-secondary
+                      {% else %}badge-info
+                      {% endif %}">
+                      {{ r.status }}
+                    </span>
+                  </div>
+
+                  {% if r.status == 'Pending' %}
+                  <div class="d-flex justify-content-sm-end justify-content-start gap-2 flex-wrap">
+                    <a class="btn btn-sm btn-outline-primary" href="{{ url_for('employee.edit_request', request_id=r.id) }}">Edit</a>
+
+                    <form action="{{ url_for('employee.cancel_request', request_id=r.id) }}" method="post" style="display:inline;">
+                      {{ form.hidden_tag() }}
+                      <button class="btn btn-sm btn-outline-danger" type="submit">Cancel</button>
+                    </form>
+
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          <!-- Pagination -->
+          <nav aria-label="Page navigation" class="mt-3">
+            <ul class="pagination justify-content-center mb-0">
+              {% if leaves.has_prev %}
+              <li class="page-item">
+                <a class="page-link" href="{{ url_for('employee.history', page=leaves.prev_num) }}">Previous</a>
+              </li>
+              {% endif %}
+
+              {% for p in leaves.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                {% if p %}
+                <li class="page-item {% if leaves.page == p %}active{% endif %}">
+                  <a class="page-link" href="{{ url_for('employee.history', page=p) }}">{{ p }}</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">…</span></li>
+                {% endif %}
+              {% endfor %}
+
+              {% if leaves.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="{{ url_for('employee.history', page=leaves.next_num) }}">Next</a>
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
+
+          {% else %}
+          <p class="text-muted text-center mb-0">No leave requests yet.</p>
+          {% endif %}
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<style>
+.register {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #fff;
+  padding: 1rem;
+}
+
+.left-card {
+  color: #fff;
+  border-radius: 12px;
+  min-height: 140px;
+}
+.register-left{
+    margin-top: 15%;
+    margin-bottom: 5%;
+    width: 25%;
+    animation: mover 1s infinite alternate;
+}
+@keyframes mover {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
+}
+.right-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  color: #222;
+}
+
+.register-heading { color: #495057; }
+
+.list-group-item {
+  background: #fff;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.badge-success { background-color: #28a745; color: #fff; }
+.badge-danger  { background-color: #dc3545; color: #fff; }
+.badge-secondary { background-color: #6c757d; color: #fff; }
+.badge-info { background-color: #17a2b8; color: #fff; }
+
+@media (max-width: 575.98px) {
+  .left-card { padding: 18px; }
+  .list-group-item { padding: 12px; }
+  .register { padding: 0.75rem; }
+}
+</style>
+
+{% endblock %}

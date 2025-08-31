@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container my-5">
+  {% if leave %}
+  <div class="register p-4 shadow-sm rounded mx-auto" style="max-width:700px;">
+    <h3 class="register-heading mb-4 text-center">Leave Request Details</h3>
+
+    <!-- Leave Info -->
+    <div class="mb-4 text-white">
+      <p><strong>Employee:</strong> {{ leave.employee.name }}</p>
+      <p><strong>Type:</strong> {{ leave.leave_type }}</p>
+      <p><strong>Start:</strong> {{ leave.start_date }}</p>
+      <p><strong>End:</strong> {{ leave.end_date }}</p>
+      <p><strong>Reason:</strong> {{ leave.reason }}</p>
+      <p>
+        <strong>Status:</strong>
+        <span class="badge 
+            {% if leave.status == 'Pending' %}bg-warning
+            {% elif leave.status == 'Approved' %}bg-success
+            {% elif leave.status == 'Rejected' %}bg-danger
+            {% else %}bg-secondary{% endif %}">
+          {{ leave.status }}
+        </span>
+      </p>
+    </div>
+
+    <!-- Manager Form -->
+    <form method="POST" class="row g-3">
+      {{ form.hidden_tag() }}
+      <div class="col-md-6">
+        {{ form.status.label(class="form-label text-white") }}
+        {{ form.status(class="form-select") }}
+        {% for e in form.status.errors %}
+          <small class="text-danger">{{ e }}</small>
+        {% endfor %}
+      </div>
+
+      <div class="col-md-12">
+        {{ form.comment.label(class="form-label text-white") }}
+        {{ form.comment(class="form-control", rows=3) }}
+        {% for e in form.comment.errors %}
+          <small class="text-danger">{{ e }}</small>
+        {% endfor %}
+      </div>
+
+      <div class="col-md-12 text-end">
+        {{ form.submit(class="btnRegister btn btn-success") }}
+        <a href="{{ url_for('manager.dashboard') }}" class="btnBack btn btn-outline-light">Back</a>
+      </div>
+    </form>
+  </div>
+  {% else %}
+    <p class="text-center text-muted">No leave selected.</p>
+  {% endif %}
+</div>
+
+<style>
+/* Blurred Card */
+.register {
+    background: rgba(0, 0, 0, 0.6);  /* darker so blur shows */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+/* Heading */
+.register-heading {
+    font-weight: 600;
+}
+
+/* Buttons */
+.btnRegister {
+    border-radius: 1.5rem;
+    padding: 8px 20px;
+    background: #2c5364;
+    color: #fff;
+    font-weight: 600;
+}
+.btnRegister:hover {
+    background: #0F2027;
+    color: #fff;
+}
+.btnBack {
+    border-radius: 1.5rem;
+    padding: 8px 20px;
+    border: 2px solid #2c5364;
+    background: transparent;
+    color: #2c5364;
+    text-decoration: none;
+}
+.btnBack:hover {
+    background: #2c5364;
+    color: #fff;
+    text-decoration: none;
+}
+body {
+    background: url('{{ url_for("static", filename="images/bg.jpg") }}') no-repeat center center fixed;
+    background-size: cover;
+}
+</style>
+
+{% endblock %}

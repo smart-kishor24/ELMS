@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container register mt-5">
+    <div class="row">
+        <!-- Left Panel -->
+        <div class="col-md-3 register-left text-center">
+            <div style="font-weight:bold; font-size:28px;">Welcome To</div>
+            <p>Leave Application</p>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="col-md-9 register-right">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="apply" role="tabpanel">
+                    <h3 class="register-heading">Apply for Leave</h3>
+
+                    <form method="POST" novalidate>
+                        {{ form.hidden_tag() }}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                {{ form.start_date.label(class="form-label") }}
+                                {{ form.start_date(class="form-control") }}
+                                {% for e in form.start_date.errors %}
+                                    <small class="text-danger">{{ e }}</small>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.end_date.label(class="form-label") }}
+                                {{ form.end_date(class="form-control") }}
+                                {% for e in form.end_date.errors %}
+                                    <small class="text-danger">{{ e }}</small>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.leave_type.label(class="form-label") }}
+                                {{ form.leave_type(class="form-select") }}
+                                {% for e in form.leave_type.errors %}
+                                    <small class="text-danger">{{ e }}</small>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form.reason.label(class="form-label") }}
+                                {{ form.reason(class="form-control", rows=4) }}
+                                {% for e in form.reason.errors %}
+                                    <small class="text-danger">{{ e }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="mt-4 d-flex justify-content-between">
+                            {{ form.submit(class="btnRegister") }}
+                            <a href="{{ url_for('employee.dashboard') }}" class="btnBack">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.register {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    padding: 3%;
+}
+.register-left {
+    text-align: center;
+    margin-top: 15%;
+    margin-bottom: 5%;
+    width: 25%;
+    animation: mover 1s infinite alternate;
+    color: #fff;
+}
+@keyframes mover {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
+}
+.register-right {
+    background: #f8f9fa;
+    border-top-left-radius: 10% 50%;
+    border-bottom-left-radius: 10% 50%;
+    padding: 30px;
+}
+.register-heading {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #495057;
+}
+.btnRegister {
+    border: none;
+    border-radius: 1.5rem;
+    padding: 8px 20px;
+    background: #2c5364;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btnRegister:hover {
+    background: #0F2027;
+    color: #fff;
+}
+.btnBack {
+    border-radius: 1.5rem;
+    padding: 8px 20px;
+    border: 2px solid #2c5364;
+    background: transparent;
+    color: #2c5364;
+    text-decoration: none;
+    transition: 0.3s;
+}
+.btnBack:hover {
+    background: #2c5364;
+    color: #fff;
+    text-decoration: none;
+}
+</style>
+{% endblock %}

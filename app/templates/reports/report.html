@@ -1,0 +1,31 @@
+<doctype html>
+    <html>
+        <head>
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+        </head>
+            <body>
+            </body>
+            <html>
+
+
+
+<h2>Leave Report</h2>
+<table border="1" cellspacing="0" cellpadding="5">
+    <tr>
+        <th>ID</th><th>Employee</th><th>Start Date</th><th>End Date</th>
+        <th>Type</th><th>Status</th><th>Manager</th><th>Manager Comment</th>
+    </tr>
+    {% for row in data %}
+    <tr>
+        <td>{{ row['ID'] }}</td>
+        <td>{{ row['Employee'] }}</td>
+        <td>{{ row['Start Date'] }}</td>
+        <td>{{ row['End Date'] }}</td>
+        <td>{{ row['Type'] }}</td>
+        <td>{{ row['Status'] }}</td>
+        <td>{{ row['Manager'] }}</td>
+        <td>{{ row['Manager Comment'] }}</td>
+    </tr>
+    {% endfor %}
+</table>

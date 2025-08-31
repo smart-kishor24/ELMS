@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block content %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<div class="container register">
+  <div class="row">
+    <!-- Left Panel -->
+    <div class="col-md-3 register-left">
+      <h3 style="margin-top: 13px">Join Us</h3>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="col-md-9 register-right">
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="register" role="tabpanel" aria-labelledby="register-tab">
+          <h3 class="register-heading">Create User</h3>
+          <form method="POST" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="row register-form">
+              <div class="col-md-6 offset-md-3">
+
+                <!-- Name -->
+                <div class="form-group">
+                  {{ form.name(class="form-control", placeholder="Full Name *") }}
+                  {% for e in form.name.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                  {{ form.email(class="form-control", placeholder="Email *") }}
+                  {% for e in form.email.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                  {{ form.password(class="form-control", placeholder="Password *") }}
+                  {% for e in form.password.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="form-group">
+                  {{ form.confirm(class="form-control", placeholder="Confirm Password *") }}
+                  {% for e in form.confirm.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
+                </div>
+
+                <!-- Role -->
+                <div class="form-group">
+                  {% if not current_user.is_authenticated %}
+                    {{ form.role(class="form-select", readonly=true) }}
+                  {% else %}
+                    {{ form.role(class="form-select") }}
+                  {% endif %}
+                  {% for e in form.role.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
+                </div>
+
+                <!-- Buttons -->
+                <div class="form-group d-flex justify-content-between">
+                  {{ form.submit(class="btnRegister") }}
+                  <a href="{{ url_for('index') }}" class="btnBack">Back</a>
+                </div>
+
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.register {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  margin-top: 3%;
+  padding: 3%;
+}
+.register-left {
+  text-align: center;
+  color: #fff;
+  margin-top: 15%;
+  margin-bottom: 5%;
+  width: 25%;
+  animation: mover 1s infinite alternate;
+}
+@keyframes mover {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-20px); }
+}
+.register-right {
+  background: #f8f9fa;
+  border-top-left-radius: 10% 50%;
+  border-bottom-left-radius: 10% 50%;
+}
+.register .register-form {
+  padding: 1%;
+  margin-top: 12%;
+}
+.register-heading {
+  text-align: center;
+  margin-top: 8%;
+  margin-bottom: -10%;
+  color: #495057;
+}
+.btnRegister {
+  border: none;
+  border-radius: 1.5rem;
+  padding: 8px 20px;
+  background: #2c5364;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btnBack {
+  border-radius: 1.5rem;
+  padding: 8px 20px;
+  border: 2px solid #2c5364;
+  background: transparent;
+  color: #2c5364;
+  text-decoration: none;
+  transition: 0.3s;
+}
+.btnBack:hover {
+  background: #2c5364;
+  color: #fff;
+  text-decoration: none;
+}
+</style>
+{% endblock %}
