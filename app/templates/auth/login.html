@@ -1,138 +1,234 @@
 {% extends "base.html" %}
 {% block content %}
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-<div class="container register">
-  <div class="row">
-    <!-- Left Panel -->
-    <div class="col-md-3 register-left">
-      <h3 style="margin-top: 13px">Welcome Back</h3>
-    </div>
-
-    <!-- Right Panel -->
-    <div class="col-md-9 register-right">
-      <div class="tab-content" id="myTabContent">
-        <!-- Login Tab -->
-        <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
-          <h3 class="register-heading">Login</h3>
-          <form method="POST" novalidate>
-            {{ form.hidden_tag() }}
-            <div class="row register-form">
-
-              <div class="col-md-6 offset-md-3">
-                <!-- Email -->
-                <div class="form-group">
-                  {{ form.email(class="form-control", placeholder="Email *") }}
-                  {% for e in form.email.errors %}
-                    <small class="text-danger">{{ e }}</small>
-                  {% endfor %}
-                </div>
-
-                <!-- Password -->
-                <div class="form-group">
-                  {{ form.password(class="form-control", placeholder="Password *") }}
-                  {% for e in form.password.errors %}
-                    <small class="text-danger">{{ e }}</small>
-                  {% endfor %}
-                </div>
-
-                <!-- Remember Me -->
-                <div class="form-check mb-3">
-                  {{ form.remember(class="form-check-input") }}
-                  {{ form.remember.label(class="form-check-label fw-medium") }}
-                </div>
-
-                <!-- Buttons row (Login + Cancel side by side) -->
-                <div class="form-group d-flex justify-content-between">
-                  {{ form.submit(class="btnRegister") }}
-                  <a href="{{ url_for('index') }}" class="btnBack">Cancel</a>
-                </div>
-
-                <!-- Extra Links -->
-                <div class="mt-4 text-center">
-                  <a href="{{ url_for('auth.forgot_password') }}" class="text-decoration-none small">Forgot your password?</a><br>
-                  <span class="text-muted small">Don't have an account?</span>
-                  <a href="{{ url_for('auth.register') }}" class="small fw-semibold"> Register</a>
-                </div>
-
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+<!-- HEADER -->
+<header class="header">
+  <div class="container">
+    <h1 class="site-title">Employee Leave Management System</h1>
   </div>
-</div>
+</header>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="container navbar-container">
+
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+  <div class="login-container">
+    <h3 class="login-title">Login</h3>
+    <p class="login-subtitle">Welcome back, please sign in</p>
+
+    <form method="POST" novalidate>
+      {{ form.hidden_tag() }}
+
+      <!-- Email -->
+      <div class="form-group">
+        {{ form.email(class="form-control-custom", placeholder="Email *") }}
+        {% for e in form.email.errors %}
+          <small class="error-text">{{ e }}</small>
+        {% endfor %}
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        {{ form.password(class="form-control-custom", placeholder="Password *") }}
+        {% for e in form.password.errors %}
+          <small class="error-text">{{ e }}</small>
+        {% endfor %}
+      </div>
+
+      <!-- Remember Me -->
+      <div class="form-check-custom">
+        {{ form.remember(class="checkbox-input") }}
+        {{ form.remember.label(class="checkbox-label") }}
+      </div>
+
+      <!-- Actions -->
+      <div class="button-group">
+        {{ form.submit(class="btn btn-primary-custom") }}
+        <a href="{{ url_for('index') }}" class="btn btn-secondary-custom">Cancel</a>
+      </div>
+
+      <!-- Extra Links -->
+      <div class="extra-links">
+        <a href="{{ url_for('auth.forgot_password') }}">Forgot your password?</a>
+        <p>Don't have an account? <a href="{{ url_for('auth.register') }}">Register</a></p>
+      </div>
+    </form>
+  </div>
+</main>
 
 <style>
-.register{
-background: rgba(255, 255, 255, 0.08);  /* translucent */
-    backdrop-filter: blur(12px);            /* blur background */
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #fff;    margin-top: 3%;
-    padding: 3%;
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background: #f9f9f9;
 }
-.register-left{
-    text-align: center;
+
+/* HEADER */
+.header {
+    background: #000;
     color: #fff;
-    margin-top: 15%;
-    margin-bottom: 5%;
-    width: 25%;
-    animation: mover 1s infinite alternate;
+    padding: 15px 0;
+    text-align: center;
 }
-@keyframes mover {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-20px); }
+
+.site-title {
+    margin: 0;
+    font-size: 1.4rem;
 }
-.register-right{
-    background: #f8f9fa;
-    border-top-left-radius: 10% 50%;
-    border-bottom-left-radius: 10% 50%;
+
+/* NAVBAR */
+.navbar {
+    background: #fff;
+    border-bottom: 1px solid #ddd;
 }
-.register .register-form{
-    padding: 1%;
-    margin-top: 12%;
+
+.navbar-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px 0;
 }
-.btnRegister{
+
+.nav-link {
+    color: #000;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.nav-link.active {
+    font-weight: 700;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+}
+
+/* MAIN CONTENT */
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 15px;
+    min-height: calc(100vh - 130px);
+}
+
+.login-container {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.login-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #000;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.login-subtitle {
+    font-size: 0.9rem;
+    color: #555;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* FORM STYLING */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control-custom {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fff;
+    color: #000;
+}
+
+.form-control-custom:focus {
+    border-color: #000;
+    outline: none;
+    box-shadow: 0 0 4px rgba(0,0,0,0.2);
+}
+
+.form-check-custom {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.checkbox-input {
+    margin-right: 8px;
+}
+
+.checkbox-label {
+    font-size: 0.9rem;
+}
+
+.error-text {
+    color: #d9534f;
+    font-size: 0.8rem;
+}
+
+/* BUTTONS */
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    flex: 1;
+    text-align: center;
+}
+
+.btn-primary-custom {
+    background: #000;
+    color: #fff;
     border: none;
-    border-radius: 1.5rem;
-    padding: 8px 20px;
-    background: #2c5364;
-    color: #fff;
-    font-weight: 600;
-    cursor: pointer;
 }
-.register-heading{
-    text-align: center;
-    margin-top: 8%;
-    margin-bottom: -10%;
-    color: #495057;
+
+.btn-primary-custom:hover {
+    background: #333;
 }
-.btnBack, .btnRegister {
-    border-radius: 1.5rem;
-    padding: 8px 20px;
-    font-weight: 600;
-    text-align: center;
-}
-.btnBack {
-    display: inline-block;
-    border: 2px solid #2c5364;
-    background: transparent;
-    color: #2c5364;
-    text-decoration: none;
-    transition: 0.3s;
-}
-.btnBack:hover {
-    background: #2c5364;
-    color: #fff;
+
+.btn-secondary-custom {
+    background: #fff;
+    border: 1px solid #000;
+    color: #000;
     text-decoration: none;
 }
-.form-check {
-  color: black;
+
+.btn-secondary-custom:hover {
+    background: #000;
+    color: #fff;
+}
+
+/* EXTRA LINKS */
+.extra-links {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+.extra-links a {
+    color: #000;
+    text-decoration: none;
+}
+
+.extra-links a:hover {
+    text-decoration: underline;
 }
 </style>
 {% endblock %}

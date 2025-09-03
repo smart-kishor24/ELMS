@@ -1,135 +1,190 @@
 {% extends "base.html" %}
 {% block content %}
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-<div class="container register">
+<!-- HEADER -->
+<header class="header">
+  <div class="container">
+    <h1 class="site-title">Employee Leave Management System</h1>
+  </div>
+</header>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="container navbar-container">
+  </div>
+</nav>
+
+<!-- FORM CONTAINER -->
+<div class="container glass-container">
   <div class="row">
     <!-- Left Panel -->
-    <div class="col-md-3 register-left">
-      <h3 style="margin-top: 13px">Join Us</h3>
+    <div class="col-md-3 glass-left">
+      <h3 class="welcome-text">Join Us</h3>
     </div>
 
     <!-- Right Panel -->
-    <div class="col-md-9 register-right">
-      <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="register" role="tabpanel" aria-labelledby="register-tab">
-          <h3 class="register-heading">Create User</h3>
-          <form method="POST" novalidate>
-            {{ form.hidden_tag() }}
-            <div class="row register-form">
-              <div class="col-md-6 offset-md-3">
+    <div class="col-md-9 glass-right">
+      <h3 class="form-heading">Create User</h3>
+      <form method="POST" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="row form-section">
+          <div class="col-md-6 offset-md-3">
 
-                <!-- Name -->
-                <div class="form-group">
-                  {{ form.name(class="form-control", placeholder="Full Name *") }}
-                  {% for e in form.name.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
-                </div>
-
-                <!-- Email -->
-                <div class="form-group">
-                  {{ form.email(class="form-control", placeholder="Email *") }}
-                  {% for e in form.email.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
-                </div>
-
-                <!-- Password -->
-                <div class="form-group">
-                  {{ form.password(class="form-control", placeholder="Password *") }}
-                  {% for e in form.password.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
-                </div>
-
-                <!-- Confirm Password -->
-                <div class="form-group">
-                  {{ form.confirm(class="form-control", placeholder="Confirm Password *") }}
-                  {% for e in form.confirm.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
-                </div>
-
-                <!-- Role -->
-                <div class="form-group">
-                  {% if not current_user.is_authenticated %}
-                    {{ form.role(class="form-select", readonly=true) }}
-                  {% else %}
-                    {{ form.role(class="form-select") }}
-                  {% endif %}
-                  {% for e in form.role.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
-                </div>
-
-                <!-- Buttons -->
-                <div class="form-group d-flex justify-content-between">
-                  {{ form.submit(class="btnRegister") }}
-                  <a href="{{ url_for('index') }}" class="btnBack">Back</a>
-                </div>
-
-              </div>
+            <!-- Name -->
+            <div class="form-group mb-3">
+              {{ form.name(class="form-control", placeholder="Full Name *") }}
+              {% for e in form.name.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
             </div>
-          </form>
+
+            <!-- Email -->
+            <div class="form-group mb-3">
+              {{ form.email(class="form-control", placeholder="Email *") }}
+              {% for e in form.email.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
+            </div>
+
+            <!-- Password -->
+            <div class="form-group mb-3">
+              {{ form.password(class="form-control", placeholder="Password *") }}
+              {% for e in form.password.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="form-group mb-3">
+              {{ form.confirm(class="form-control", placeholder="Confirm Password *") }}
+              {% for e in form.confirm.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
+            </div>
+
+            <!-- Role -->
+            <div class="form-group mb-4">
+              {% if not current_user.is_authenticated %}
+                {{ form.role(class="form-select", readonly=true) }}
+              {% else %}
+                {{ form.role(class="form-select") }}
+              {% endif %}
+              {% for e in form.role.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
+            </div>
+
+            <!-- Buttons -->
+            <div class="form-group d-flex justify-content-between">
+              {{ form.submit(class="btn-submit") }}
+              <a href="{{ url_for('index') }}" class="btn-cancel">Back</a>
+            </div>
+
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </div>
 
 <style>
-.register {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #fff;
-  margin-top: 3%;
-  padding: 3%;
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f9f9f9;
+  margin: 0;
 }
-.register-left {
-  text-align: center;
+
+/* HEADER */
+.header {
+  background: #000;
   color: #fff;
+  padding: 15px 0;
+  text-align: center;
+}
+
+.site-title {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+/* NAVBAR */
+.navbar {
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px 0;
+}
+
+.nav-link {
+  color: #000;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-link.active {
+  font-weight: 700;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+/* FORM WRAPPER */
+.glass-container {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2%;
+  margin-top: 40px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.glass-left {
+  text-align: center;
+  color: #000;
   margin-top: 15%;
   margin-bottom: 5%;
-  width: 25%;
-  animation: mover 1s infinite alternate;
 }
-@keyframes mover {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-20px); }
-}
-.register-right {
-  background: #f8f9fa;
+
+.glass-right {
+  background: #fff;
   border-top-left-radius: 10% 50%;
   border-bottom-left-radius: 10% 50%;
+  padding: 2rem;
 }
-.register .register-form {
-  padding: 1%;
-  margin-top: 12%;
-}
-.register-heading {
+
+.form-heading {
   text-align: center;
-  margin-top: 8%;
-  margin-bottom: -10%;
-  color: #495057;
+  color: #000;
+  margin-bottom: 1.5rem;
 }
-.btnRegister {
+
+.btn-submit {
   border: none;
   border-radius: 1.5rem;
   padding: 8px 20px;
-  background: #2c5364;
+  background: #000;
   color: #fff;
   font-weight: 600;
   cursor: pointer;
+  transition: 0.3s;
 }
-.btnBack {
+
+.btn-submit:hover {
+  background: #333;
+}
+
+.btn-cancel {
   border-radius: 1.5rem;
   padding: 8px 20px;
-  border: 2px solid #2c5364;
+  border: 2px solid #000;
   background: transparent;
-  color: #2c5364;
+  color: #000;
   text-decoration: none;
   transition: 0.3s;
 }
-.btnBack:hover {
-  background: #2c5364;
+
+.btn-cancel:hover {
+  background: #000;
   color: #fff;
-  text-decoration: none;
+}
+
+.text-danger {
+  font-size: 0.8rem;
 }
 </style>
 {% endblock %}

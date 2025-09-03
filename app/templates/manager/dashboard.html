@@ -1,125 +1,124 @@
 {% extends "base.html" %}
 {% block content %}
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-<div class="container register mt-5">
-    <div class="row">
-        <!-- Left Panel -->
-        <div class="col-md-3 register-left">
-            <h3>Manager</h3>
-            <p>Review Leave Requests</p>
-        </div>
-
-        <!-- Right Panel -->
-        <div class="col-md-9 register-right">
-            <h3 class="register-heading">Team Leave Requests</h3>
-
-            <!-- Filter Form -->
-            <form method="GET" action="{{ url_for('manager.filter_leaves') }}" class="row g-3 mb-4">
-                <div class="col-md-3">
-                    <select name="status" class="form-control">
-                        <option value="">All Status</option>
-                        <option value="Pending" {% if request.args.get('status')=='Pending' %}selected{% endif %}>Pending</option>
-                        <option value="Approved" {% if request.args.get('status')=='Approved' %}selected{% endif %}>Approved</option>
-                        <option value="Rejected" {% if request.args.get('status')=='Rejected' %}selected{% endif %}>Rejected</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <input type="text" name="employee_id" class="form-control" placeholder="Employee ID" value="{{ request.args.get('employee_id', '') }}">
-                </div>
-                <div class="col-md-3">
-                    <input type="date" name="start_date" class="form-control" value="{{ request.args.get('start_date', '') }}">
-                </div>
-                <div class="col-md-3">
-                    <input type="date" name="end_date" class="form-control" value="{{ request.args.get('end_date', '') }}">
-                </div>
-                <div class="col-md-12 mt-2">
-                    <button type="submit" class="btn btn-primary">Filter</button>
-                    <a href="{{ url_for('manager.dashboard') }}" class="btn btn-secondary">Clear Filter</a>
-                </div>
-            </form>
-
-            <!-- Leave Table -->
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>Employee</th>
-                            <th>Type</th>
-                            <th>Start</th>
-                            <th>End</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for leave in leaves %}
-                        <tr>
-                            <td>{{ leave.id }}</td>
-                            <td>{{ leave.employee.name }}</td>
-                            <td>{{ leave.leave_type }}</td>
-                            <td>{{ leave.start_date }}</td>
-                            <td>{{ leave.end_date }}</td>
-                            <td>
-                                <span class="badge 
-                                    {% if leave.status == 'Pending' %}badge-warning
-                                    {% elif leave.status == 'Approved' %}badge-success
-                                    {% elif leave.status == 'Rejected' %}badge-danger
-                                    {% else %}badge-secondary{% endif %}">
-                                    {{ leave.status }}
-                                </span>
-                            </td>
-                            <td>
-                                {% if leave.status == 'Pending' %}
-                                <a href="{{ url_for('manager.view_leave', leave_id=leave.id) }}" class="btn btn-primary btn-sm">Review</a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<div class="manager-dashboard">
+    <div class="dashboard-header">
+        <h2>Manager Dashboard</h2>
+        <p class="subtitle">Review and manage team leave requests</p>
     </div>
+
+    <!-- Filter Card -->
+    <div class="card filter-card">
+        <h4>Filter Leave Requests</h4>
+        <form method="GET" action="{{ url_for('manager.filter_leaves') }}" class="filter-form">
+            <div class="form-row">
+                <select name="status" class="form-input">
+                    <option value="">All Status</option>
+                    <option value="Pending" {% if request.args.get('status')=='Pending' %}selected{% endif %}>Pending</option>
+                    <option value="Approved" {% if request.args.get('status')=='Approved' %}selected{% endif %}>Approved</option>
+                    <option value="Rejected" {% if request.args.get('status')=='Rejected' %}selected{% endif %}>Rejected</option>
+                </select>
+                <input type="text" name="employee_id" placeholder="Employee ID" value="{{ request.args.get('employee_id', '') }}" class="form-input">
+                <input type="date" name="start_date" value="{{ request.args.get('start_date', '') }}" class="form-input">
+                <input type="date" name="end_date" value="{{ request.args.get('end_date', '') }}" class="form-input">
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary-custom">Filter</button>
+                <a href="{{ url_for('manager.dashboard') }}" class="btn btn-secondary-custom">Clear Filter</a>
+            </div>
+        </form>
+    </div>
+
 </div>
 
 <style>
-.register{
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #fff;
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f5f7fa;
+    color: #333;
     padding: 20px;
 }
-.register-left{
-    text-align: center;
-    color: #fff;
-    margin-top: 20px;
+
+.manager-dashboard {
+    max-width: 1100px;
+    margin: auto;
 }
-.register-right{
-    background: #f8f9fa;
-    border-radius: 16px;
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.dashboard-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.dashboard-header .subtitle {
+    font-size: 1rem;
+    color: #666;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
     padding: 20px;
-}
-.register-heading{
-    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     margin-bottom: 20px;
-    color: #495057;
 }
-.badge-warning{
-    background-color: #ffc107;
-    color: #212529;
+
+.filter-card h4 {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    font-weight: 600;
 }
-.badge-success{
-    background-color: #28a745;
+
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
-.badge-danger{
-    background-color: #dc3545;
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.form-input {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 8px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary-custom {
+    background: #007bff;
+    color: #fff;
+}
+
+.btn-secondary-custom {
+    background: #6c757d;
+    color: #fff;
+}
+
+.btn:hover {
+    opacity: 0.9;
 }
 </style>
 {% endblock %}
